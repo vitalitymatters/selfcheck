@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Gratis leefstijlcheck — Artrose in Beweging | Vitality Matters</title>
+<meta name="description" content="Hoe groot is de invloed van jouw leefstijl op jouw kniepijn? Doe de gratis leefstijlcheck van Vitality Matters.">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root { --sage: #5a7a5e; --sage-light: #e8f0e9; --sage-mid: #b8cebc; --warm: #c8793a; --warm-light: #f5ede4; --cream: #faf8f4; --text: #1e2820; --text-mid: #4a5c4e; --text-light: #7a8c7e; --radius: 14px; }
+  body { font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--text); min-height: 100vh; }
+  .shell { max-width: 620px; margin: 0 auto; padding: 40px 20px 80px; }
+  .brand { text-align: center; margin-bottom: 32px; }
+  .brand-name { font-family: 'Playfair Display', serif; font-size: 15px; color: var(--sage); letter-spacing: 0.04em; }
+  .header { text-align: center; margin-bottom: 36px; }
+  .badge { display: inline-block; background: var(--sage-light); color: var(--sage); font-size: 11px; font-weight: 500; letter-spacing: 0.08em; text-transform: uppercase; padding: 5px 14px; border-radius: 100px; margin-bottom: 16px; }
+  .header h1 { font-family: 'Playfair Display', serif; font-size: clamp(20px, 5vw, 28px); font-weight: 600; line-height: 1.3; color: var(--text); margin-bottom: 12px; }
+  .header p { font-size: 15px; color: var(--text-mid); line-height: 1.65; max-width: 460px; margin: 0 auto; }
+  .progress-wrap { margin-bottom: 28px; }
+  .progress-meta { display: flex; justify-content: space-between; font-size: 12px; color: var(--text-light); margin-bottom: 8px; }
+  .progress-bar { height: 4px; background: var(--sage-mid); border-radius: 100px; overflow: hidden; }
+  .progress-fill { height: 100%; background: var(--sage); border-radius: 100px; transition: width 0.4s ease; }
+  .category-label { font-size: 11px; font-weight: 500; letter-spacing: 0.07em; text-transform: uppercase; color: var(--sage); margin-bottom: 10px; }
+  .question-card { background: #fff; border-radius: var(--radius); padding: 28px 28px 24px; border: 1px solid #e4ece5; margin-bottom: 16px; animation: fadeUp 0.35s ease forwards; }
+  .question-note { font-size: 12px; color: var(--text-light); font-style: italic; margin-bottom: 14px; line-height: 1.5; }
+  @keyframes fadeUp { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .question-text { font-family: 'Playfair Display', serif; font-size: 17px; font-weight: 400; line-height: 1.45; color: var(--text); margin-bottom: 20px; }
+  .options { display: flex; flex-direction: column; gap: 10px; }
+  .option { display: flex; align-items: flex-start; gap: 12px; padding: 13px 16px; border-radius: 10px; border: 1.5px solid #e4ece5; background: var(--cream); cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: left; }
+  .option:hover { border-color: var(--sage-mid); background: var(--sage-light); }
+  .option.selected { border-color: var(--sage); background: var(--sage-light); }
+  .option-dot { width: 18px; height: 18px; min-width: 18px; border-radius: 50%; border: 2px solid var(--sage-mid); margin-top: 1px; display: flex; align-items: center; justify-content: center; transition: border-color 0.2s, background 0.2s; }
+  .option.selected .option-dot { border-color: var(--sage); background: var(--sage); }
+  .option.selected .option-dot::after { content: ''; width: 6px; height: 6px; background: #fff; border-radius: 50%; }
+  .option-text { font-size: 14px; line-height: 1.5; color: var(--text-mid); }
+  .option.selected .option-text { color: var(--text); }
+  .nav { display: flex; align-items: center; margin-top: 4px; }
+  .btn { padding: 12px 28px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; border: none; transition: opacity 0.2s, transform 0.15s; }
+  .btn:active { transform: scale(0.97); }
+  .btn-ghost { background: transparent; color: var(--text-light); padding: 12px 16px; }
+  .btn-ghost:hover { color: var(--text); }
+  .result { display: none; animation: fadeUp 0.4s ease forwards; }
+  .result-header { background: #fff; border-radius: var(--radius); padding: 32px 28px; border: 1px solid #e4ece5; margin-bottom: 16px; text-align: center; }
+  .score-ring { width: 88px; height: 88px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 16px; font-family: 'Playfair Display', serif; font-size: 22px; font-weight: 600; }
+  .score-ring.low { background: #fdecea; color: #c0392b; }
+  .score-ring.mid { background: var(--warm-light); color: var(--warm); }
+  .score-ring.high { background: var(--sage-light); color: var(--sage); }
+  .result-title { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 600; margin-bottom: 10px; line-height: 1.3; }
+  .result-intro { font-size: 14px; color: var(--text-mid); line-height: 1.65; max-width: 440px; margin: 0 auto; }
+  .optin-block { background: #fff; border-radius: var(--radius); padding: 28px; border: 1px solid #e4ece5; margin-bottom: 16px; }
+  .optin-block h3 { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
+  .optin-block p { font-size: 14px; color: var(--text-mid); line-height: 1.65; margin-bottom: 20px; }
+  .optin-form { display: flex; flex-direction: column; gap: 12px; }
+  .optin-input { padding: 13px 16px; border-radius: 10px; border: 1.5px solid #e4ece5; font-family: 'DM Sans', sans-serif; font-size: 14px; color: var(--text); background: var(--cream); outline: none; transition: border-color 0.2s; }
+  .optin-input:focus { border-color: var(--sage); }
+  .btn-submit { background: var(--sage); color: #fff; padding: 14px; border-radius: 100px; font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500; border: none; cursor: pointer; transition: opacity 0.2s; }
+  .btn-submit:hover { opacity: 0.9; }
+  .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
+  .optin-note { font-size: 11px; color: var(--text-light); text-align: center; }
+  .checkbox-label { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; font-size: 13px; color: var(--text-mid); line-height: 1.5; }
+  .checkbox-label input[type="checkbox"] { margin-top: 2px; min-width: 16px; height: 16px; accent-color: var(--sage); cursor: pointer; }
+  .success-msg { background: var(--sage-light); border-radius: 10px; padding: 16px; text-align: center; font-size: 14px; color: var(--sage); line-height: 1.6; display: none; }
+  .restart-wrap { text-align: center; margin-top: 24px; }
+  .restart-wrap button { background: none; border: none; color: var(--text-light); font-size: 13px; cursor: pointer; font-family: 'DM Sans', sans-serif; text-decoration: underline; }
+  .footer { text-align: center; margin-top: 48px; font-size: 12px; color: var(--text-light); }
+</style>
+</head>
+<body>
+<div class="shell">
+  <div class="brand"><div class="brand-name">Vitality Matters</div></div>
+  <div class="header">
+    <div class="badge">Gratis leefstijlcheck</div>
+    <h1>Hoe groot is de invloed van jouw leefstijl op jouw kniepijn?</h1>
+    <p>Beantwoord 28 korte vragen en ontdek op welke leefstijlgebieden de meeste winst voor jou te halen is.</p>
+  </div>
+
+  <div id="quiz-section">
+    <div class="progress-wrap">
+      <div class="progress-meta">
+        <span id="q-counter">Vraag 1 van 28</span>
+        <span id="q-pct">0%</span>
+      </div>
+      <div class="progress-bar"><div class="progress-fill" id="prog" style="width:0%"></div></div>
+    </div>
+    <div class="category-label" id="cat-label"></div>
+    <div class="question-card" id="q-card">
+      <div class="question-text" id="q-text"></div>
+      <div class="question-note" id="q-note" style="display:none"></div>
+      <div class="options" id="q-options"></div>
+    </div>
+    <div class="nav">
+      <button class="btn btn-ghost" id="btn-prev" onclick="prev()">← Terug</button>
+    </div>
+  </div>
+
+  <div class="result" id="result-section">
+    <div class="result-header">
+      <div class="score-ring" id="score-ring"></div>
+      <div class="result-title" id="result-title"></div>
+      <p class="result-intro" id="result-intro"></p>
+    </div>
+    <div class="optin-block">
+      <h3>Ontvang jouw persoonlijk rapport</h3>
+      <p>Vul je naam en e-mailadres in en ontvang direct jouw volledige leefstijlanalyse met de belangrijkste aandachtspunten en concrete tips.</p>
+      <div class="optin-form">
+        <input class="optin-input" type="text" id="optin-name" placeholder="Jouw voornaam" required>
+        <input class="optin-input" type="email" id="optin-email" placeholder="Jouw e-mailadres" required>
+        <label class="checkbox-label">
+          <input type="checkbox" id="optin-consent">
+          <span>Ja, ik ontvang graag praktische tips en adviezen van Vitality Matters voor een actief en vitaal leven met artrose.</span>
+        </label>
+        <button class="btn-submit" id="btn-submit" onclick="submitReport()">Stuur mij mijn persoonlijk rapport →</button>
+        <p class="optin-note">Jouw gegevens worden niet verkocht of gedeeld met andere bedrijven.</p>
+      </div>
+      <div class="success-msg" id="success-msg">
+        Gelukt! Jouw persoonlijk rapport is onderweg naar jouw inbox.<br>Controleer ook je spammap als je het niet direct ziet.
+      </div>
+    </div>
+    <div class="restart-wrap"><button onclick="restart()">Opnieuw beginnen</button></div>
+  </div>
+
+  <div class="footer">© Vitality Matters</div>
+</div>
+
+<script>
+const questions = [
+  {cat:"Jouw klachten",q:"Hoe lang heb je al last van je knie?",note:"",opts:["Langer dan 2 jaar, en het lijkt langzaam erger te worden","Tussen 6 maanden en 2 jaar","Korter dan 6 maanden"]},
+  {cat:"Jouw klachten",q:"Heb je naast je knie ook klachten aan andere gewrichten?",note:"",opts:["Ja, ik ervaar ook pijn of stijfheid in andere gewrichten zoals heupen, schouders, handen, rug of nek","Nee, maar wel in beide knieën","Nee, alleen in één knie"]},
+  {cat:"Jouw klachten",q:"Heb je één of meer overige gezondheidsklachten?",note:"Denk aan verhoogd cholesterol, hoge bloeddruk, diabetes of overgewicht",opts:["Ja, meerdere","Ja, één","Nee"]},
+  {cat:"Omgaan met pijn",q:"Weet je wanneer je moet blijven bewegen ondanks de pijn, en wanneer je juist even rust moet nemen?",note:"",opts:["Nee, ik weet niet hoe ik dat onderscheid moet maken","Soms, maar ik twijfel regelmatig en weet dan niet zeker wat de juiste keuze is","Ja, ik weet wanneer ik door kan gaan en wanneer ik beter even rust kan nemen"]},
+  {cat:"Omgaan met pijn",q:"Wat denk je als je knie pijn doet?",note:"",opts:["Ik denk dat er iets mis is en dat bewegen meer schade kan brengen aan mijn knie","Ik weet niet goed wat ik ervan moet denken","Ik begrijp dat pijn niet altijd betekent dat er schade is"]},
+  {cat:"Omgaan met pijn",q:"Wat doe je als je kniepijn toeneemt tijdens of na een activiteit?",note:"",opts:["Ik stop meteen en durf die activiteit daarna niet meer te doen","Ik pas aan, maar doe dit vooral uit voorzichtigheid en weet niet goed wanneer ik weer kan opbouwen","Ik pas de activiteit tijdelijk bewust aan en weet hoe ik dit daarna weer stap voor stap op kan bouwen"]},
+  {cat:"Omgaan met pijn",q:"Heb je het gevoel dat je knieklachten te verbeteren zijn met de juiste aanpak?",note:"",opts:["Nee, ik denk dat het alleen maar erger wordt","Ik hoop het, maar heb er weinig vertrouwen in","Ja, ik geloof dat de juiste oefeningen en aanpassingen in leefstijl een groot verschil kunnen maken"]},
+  {cat:"Beweging",q:"Doe je spierversterkende oefeningen voor je benen?",note:"",opts:["Nooit of zelden","Soms — maar niet structureel","Ja, minimaal 2 keer per week"]},
+  {cat:"Beweging",q:"Hoeveel matig intensieve beweging heb je per week?",note:"Bij matige intensiteit gaat je hartslag omhoog, maar je kunt nog wel blijven praten — denk aan stevig wandelen, fietsen of zwemmen",opts:["Minder dan 60 minuten","Tussen 60 en 150 minuten","150 minuten of meer"]},
+  {cat:"Beweging",q:"Lukt het je om tijdens het zitten elke 30 minuten even op te staan en te bewegen?",note:"",opts:["Nee, ik zit vaak meer dan 2 uur achter elkaar","Soms, maar niet consequent","Ja, ik sta regelmatig op en beweeg even tussendoor"]},
+  {cat:"Slaap",q:"Hoe lang doe je er gemiddeld over om in slaap te vallen?",note:"",opts:["Langer dan 30 minuten","Tussen 15 en 30 minuten","Binnen 15 minuten"]},
+  {cat:"Slaap",q:"Hoeveel uur slaap je gemiddeld per nacht?",note:"",opts:["Minder dan 6 uur","Tussen 6 en 7 uur","Tussen 7 en 9 uur"]},
+  {cat:"Slaap",q:"Word je 's nachts wakker?",note:"",opts:["4 keer of vaker per nacht","2 tot 3 keer per nacht","Zelden, of maximaal 1 keer per nacht"]},
+  {cat:"Slaap",q:"Hoe voel je je als je opstaat?",note:"",opts:["Moe en niet uitgerust","Wisselend — soms goed, soms niet","Uitgerust en klaar voor de dag"]},
+  {cat:"Voeding",q:"Hoe zou je jouw eetpatroon omschrijven?",note:"",opts:["Veel bewerkt voedsel, weinig groente en fruit","Redelijk gevarieerd, maar niet bewust gericht op ontstekingsremming","Overwegend onbewerkt, veel groente, vette vis en gezonde vetten"]},
+  {cat:"Voeding",q:"Hoeveel gram groenten eet je gemiddeld per dag?",note:"",opts:["Minder dan 250 gram","Tussen 250 en 400 gram","Meer dan 400 gram"]},
+  {cat:"Voeding",q:"Hoeveel eetmomenten heb je op een dag?",note:"Let op: dranken met calorieën zoals frisdrank, sap of melk tellen ook als eetmoment",opts:["Meer dan 5","4 tot 5 eetmomenten","2 tot 3 hoofdmaaltijden, geen tussendoortjes"]},
+  {cat:"Hydratatie",q:"Hoeveel water drink je gemiddeld per dag?",note:"",opts:["Minder dan 1 liter","Tussen 1 en 1,5 liter","Meer dan 1,5 liter"]},
+  {cat:"Hydratatie",q:"Hoeveel alcoholische dranken drink je gemiddeld per week?",note:"",opts:["Meer dan 7 glazen per week","1 tot 7 glazen per week","Geen alcohol of zelden"]},
+  {cat:"Hydratatie",q:"Hoeveel koppen koffie drink je gemiddeld per dag?",note:"",opts:["Meer dan 4 koppen per dag","2 tot 4 koppen per dag","Minder dan 2 koppen per dag of geen koffie"]},
+  {cat:"Immuunsysteem",q:"Heb je last van huidklachten zoals eczeem of huiduitslag?",note:"",opts:["Ja, regelmatig","Soms","Nooit"]},
+  {cat:"Immuunsysteem",q:"Ben je vaak verkouden, snotterig of heb je frequent kleine infecties?",note:"",opts:["Ja, meerdere keren per jaar","Soms, maar niet opvallend vaak","Zelden tot nooit"]},
+  {cat:"Immuunsysteem",q:"Heb je regelmatig last van darmklachten zoals een opgeblazen gevoel, diarree of obstipatie?",note:"",opts:["Ja, regelmatig","Soms","Zelden tot nooit"]},
+  {cat:"Immuunsysteem",q:"Heb je na het eten regelmatig een 'dip' of voel je je moe?",note:"",opts:["Ja, vaak","Soms","Zelden tot nooit"]},
+  {cat:"Gedrag & mindset",q:"Hoe ga je om met tegenslagen, bijvoorbeeld een week waarin je minder hebt bewogen of minder gezond hebt gegeten?",note:"",opts:["Ik geef mijn voornemens dan al snel op en val terug in oude gewoontes","Ik baal ervan en het kost me moeite om weer in het goede ritme te komen","Ik accepteer het en pak de draad daarna gewoon weer op"]},
+  {cat:"Gedrag & mindset",q:"Heb je een vast dagritme waarop je beweegt, eet en slaapt?",note:"",opts:["Nee, mijn dag heeft weinig structuur","Gedeeltelijk — sommige dingen doe ik vast, andere niet","Ja, ik heb een redelijk vast ritme dat goed voor me werkt"]},
+  {cat:"Gedrag & mindset",q:"Hoe sta je tegenover verandering in je leefstijl?",note:"",opts:["Ik twijfel of ik het wel kan en/of ik weet niet waar ik moet beginnen","Ik wil graag veranderen maar heb moeite met volhouden","Ik ben gemotiveerd en bereid stappen te zetten als ik weet wat werkt"]},
+  {cat:"Gedrag & mindset",q:"Wat drijft je om iets aan je kniepijn te doen?",note:"",opts:["Ik weet het eigenlijk niet goed — ik hoop dat het vanzelf beter wordt","Ik wil graag iets doen maar weet niet waar ik moet beginnen","Ik heb een duidelijk doel voor ogen en ben bereid daar actief aan te werken"]},
+];
+
+const categoryData = {
+  "Jouw klachten":    {indices:[0,1,2],      tips:{low:"Je klachten zijn al langere tijd aanwezig en beïnvloeden meerdere gewrichten. Een integrale aanpak is hier het meest effectief: dat betekent dat je niet alleen naar je knie kijkt, maar naar je lichaam als geheel: je beweging, voeding, slaap en gedrag werken allemaal samen en beïnvloeden elkaar.",mid:"Je zit in een fase waarin je klachten nog goed te beïnvloeden zijn. Juist nu is de investering in de juiste leefstijl het meest waardevol.",high:"Jouw profiel laat zien dat je relatief weinig bijkomende gezondheidsklachten hebt. Dat is een voordeel: je lichaam heeft een goede basis om op voort te bouwen. Een bewuste leefstijl is daarbij essentieel: het is de beste manier om te zorgen dat dit zo blijft en verdere klachten te voorkomen."}},
+  "Omgaan met pijn":  {indices:[3,4,5,6],    tips:{low:"Door meer inzicht te krijgen in hoe pijn werkt, verandert de manier waarop je ermee omgaat. Dat heeft vaak direct effect op hoeveel je durft te bewegen, en beweging is van essentieel belang bij artrose.",mid:"Je hebt al enig inzicht, maar er is ruimte om dit verder te ontwikkelen. Meer regie over je pijn begint met de juiste kennis.",high:"Je begrijpt al goed hoe pijn werkt. Dit geeft je een sterke basis om verder op te bouwen."}},
+  "Beweging":         {indices:[7,8,9],      tips:{low:"Je beweegt op dit moment te weinig om je knie optimaal te ondersteunen. Dat is te begrijpen, want pijn maakt bewegen lastig. Maar juist gerichte, rustige beweging is één van de krachtigste middelen tegen artrose. Het versterkt de spieren rondom je knie, vermindert stijfheid en kan je pijn op de lange termijn significant verminderen.",mid:"Je beweegt al en dat is een goede basis, maar er is nog winst te halen. Met de juiste oefeningen gericht op spierkracht en stabiliteit rond je knie haal je meer resultaat uit de beweging die je al doet.",high:"Goed bezig. Je bewegingspatroon is al een sterke basis. Nu is het tijd om de puntjes op de i te zetten: denk aan specifieke spierversterkende oefeningen voor de knie en het optimaliseren van je herstel tussen trainingen door."}},
+  "Slaap":            {indices:[10,11,12,13], tips:{low:"Slechte slaap verhoogt je pijngevoeligheid direct. Alle weefsels in je lichaam, zoals spieren, pezen en gewrichten, herstellen tijdens de slaap. Het belang van slaap voor je herstel mag je niet onderschatten. Ga hier heel bewust mee aan de slag.",mid:"Je slaap is wisselend. Dat betekent dat je herstel ook wisselend is. Een vaste slaaproutine en een paar gerichte aanpassingen kunnen het herstellend vermogen van je lichaam verbeteren, en dat merk je direct in je energieniveau en pijnbeleving.",high:"Goede slaap is van enorm belang om te herstellen. Je lichaam doet 's nachts zijn belangrijkste herstellende werk. Blijf dit prioriteit geven!"}},
+  "Voeding":          {indices:[14,15,16],   tips:{low:"Voeding heeft directe invloed op ontstekingsprocessen in je lichaam. Bij artrose spelen laaggradige ontstekingen een belangrijke rol. Met gerichte aanpassingen is hier veel winst te halen.",mid:"Je eetpatroon heeft een redelijke basis. Bewuster kiezen voor ontstekingsremmende maaltijden geeft extra ondersteuning aan je gewrichten.",high:"Je voeding ondersteunt je herstel al goed. Toch is voeding een gebied waar altijd verbetering mogelijk is: blijf bewust kijken naar wat je eet, want je lichaam reageert elke dag opnieuw op wat jij het geeft."}},
+  "Hydratatie":       {indices:[17,18,19],   tips:{low:"Je drinkt te weinig vocht. Water is essentieel voor gezond kraakbeen omdat het voor een groot gedeelte uit water bestaat. Daarnaast geldt: te veel koffie en/of alcohol heeft een negatieve invloed op je vochtbalans én op herstelprocessen in je lichaam. Dit is één van de makkelijkste verbeterpunten om direct mee te starten.",mid:"Je vochtinname kan beter. Let ook op je koffie- en alcoholconsumptie: beide hebben bij overmatig gebruik een negatieve invloed op je vochtbalans en je herstelcapaciteit. Iets meer structuur in wat en hoeveel je drinkt maakt al verschil.",high:"Goed! Je vochtinname is op orde. Blijf wel bewust kijken naar de balans tussen water, koffie en alcohol: ook bij een goede basis kan overmatig koffie- of alcoholgebruik je herstel ongemerkt beïnvloeden."}},
+  "Immuunsysteem":    {indices:[20,21,22,23], tips:{low:"Jouw immuunsysteem geeft signalen dat het extra ondersteuning kan gebruiken. Voeding, slaap en beweging spelen hierin een grote rol: drie pijlers die direct met elkaar samenhangen en elkaar versterken.",mid:"Er zijn enkele signalen vanuit je immuunsysteem die aandacht verdienen. Gerichte aanpassingen in je voeding, slaap en beweging kunnen je weerstand en herstelcapaciteit merkbaar versterken.",high:"Je immuunsysteem lijkt goed in balans. Blijf de factoren die daarvoor zorgen bewust onderhouden."}},
+  "Gedrag & mindset": {indices:[24,25,26,27], tips:{low:"Gedrag en gewoontes zijn de basis van duurzame verandering. Zonder de juiste mindset en structuur blijft elke aanpassing tijdelijk. Dit is waar de grootste doorbraak voor jou te halen valt.",mid:"Je bent gemotiveerd maar mist structuur of houvast. Met de juiste begeleiding wordt volhouden een stuk makkelijker; en dat is precies waar Artrose in Beweging je bij kan helpen.",high:"Je mindset is een van je grootste troeven. Gebruik die bewust als fundament voor de rest van je leefstijl."}},
+};
+
+const profileData = {
+  low:  {title:"Jouw leefstijl vraagt om aandacht op meerdere vlakken",intro:"Op basis van jouw antwoorden zijn er meerdere leefstijlgebieden die direct aandacht vragen. Dat klinkt misschien overweldigend — maar het goede nieuws is dat hier ook de meeste winst te halen is. Met de juiste aanpak kun je al binnen enkele weken verschil merken."},
+  mid:  {title:"Je doet al een aantal dingen goed — maar er is meer mogelijk",intro:"Je hebt al een goede basis op enkele leefstijlgebieden. Tegelijkertijd laat jouw profiel zien dat er op specifieke gebieden nog duidelijke verbeterpunten zijn. Gerichte aandacht daarvoor kan jouw kniepijn merkbaar verminderen."},
+  high: {title:"Je hebt al een goede leefstijlbasis opgebouwd",intro:"Je hebt al een goede leefstijlbasis opgebouwd. Toch laat jouw profiel zien dat er ook voor jou nog winst te halen valt, op de gebieden waar je lager scoort. Kleine, gerichte aanpassingen maken het verschil tussen goed en optimaal."},
+};
+
+const labelMap = {low:"Belangrijk aandachtspunt", mid:"Ruimte voor verbetering", high:"Goed bezig"};
+
+let current = 0;
+let answers = new Array(28).fill(null);
+let resultData = {};
+
+function render() {
+  const q = questions[current];
+  document.getElementById('cat-label').textContent = q.cat;
+  document.getElementById('q-text').textContent = q.q;
+  const noteEl = document.getElementById('q-note');
+  if (q.note) { noteEl.textContent = q.note; noteEl.style.display = 'block'; } else { noteEl.style.display = 'none'; }
+  const pct = Math.round((current / 28) * 100);
+  document.getElementById('prog').style.width = pct + '%';
+  document.getElementById('q-counter').textContent = `Vraag ${current + 1} van 28`;
+  document.getElementById('q-pct').textContent = pct + '%';
+  const optsEl = document.getElementById('q-options');
+  optsEl.innerHTML = '';
+  q.opts.forEach((o, i) => {
+    const div = document.createElement('div');
+    div.className = 'option' + (answers[current] === i ? ' selected' : '');
+    div.innerHTML = `<div class="option-dot"></div><span class="option-text">${o}</span>`;
+    div.onclick = () => select(i);
+    optsEl.appendChild(div);
+  });
+  document.getElementById('btn-prev').style.visibility = current === 0 ? 'hidden' : 'visible';
+  const card = document.getElementById('q-card');
+  card.style.animation = 'none'; card.offsetHeight; card.style.animation = '';
+}
+
+function select(i) {
+  answers[current] = i;
+  document.querySelectorAll('.option').forEach((el, idx) => el.classList.toggle('selected', idx === i));
+  setTimeout(() => {
+    if (current < 27) { current++; render(); } else showResult();
+  }, 400);
+}
+
+function prev() { if (current > 0) { current--; render(); } }
+
+function getLevel(indices) {
+  const avg = indices.map(i => answers[i] + 1).reduce((a,b) => a+b, 0) / indices.length;
+  const pct = (avg - 1) / 2;
+  if (pct <= 0.4) return 'low';
+  if (pct <= 0.7) return 'mid';
+  return 'high';
+}
+
+function showResult() {
+  document.getElementById('quiz-section').style.display = 'none';
+  document.getElementById('result-section').style.display = 'block';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  const total = answers.reduce((s, a) => s + (a + 1), 0);
+  const level = total <= 46 ? 'low' : total <= 65 ? 'mid' : 'high';
+  const ring = document.getElementById('score-ring');
+  ring.textContent = total + '/84';
+  ring.className = 'score-ring ' + level;
+  document.getElementById('result-title').textContent = profileData[level].title;
+  document.getElementById('result-intro').textContent = profileData[level].intro;
+
+  const catLevels = {};
+  let priorities = [];
+  let reportText = '';
+
+  Object.entries(categoryData).forEach(([name, data]) => {
+    const lvl = getLevel(data.indices);
+    catLevels[name] = lvl;
+    if (lvl === 'low') priorities.push(name);
+    reportText += `${name} — ${labelMap[lvl]}\n${data.tips[lvl]}\n\n`;
+  });
+
+  if (priorities.length === 0) {
+    Object.entries(catLevels).filter(([,v]) => v === 'mid').forEach(([k]) => priorities.push(k));
+  }
+
+  resultData = { total, level, catLevels, priorities: priorities.slice(0,3), reportText };
+}
+
+async function submitReport() {
+  const name = document.getElementById('optin-name').value.trim();
+  const email = document.getElementById('optin-email').value.trim();
+  const consent = document.getElementById('optin-consent').checked;
+  if (!name || !email) { alert('Vul je naam en e-mailadres in.'); return; }
+
+  const btn = document.getElementById('btn-submit');
+  btn.disabled = true;
+  btn.textContent = 'Versturen...';
+
+  const emailBody = `Hallo ${name},
+
+Bedankt voor het invullen van de Vitality Matters leefstijlcheck!
+
+Jouw totaalscore: ${resultData.total}/84
+Profiel: ${profileData[resultData.level].title}
+
+${profileData[resultData.level].intro}
+
+JOUW BELANGRIJKSTE AANDACHTSPUNTEN:
+${resultData.priorities.join(' · ')}
+
+JOUW VOLLEDIGE LEEFSTIJLPROFIEL:
+${resultData.reportText}
+Klaar voor de volgende stap?
+Artrose in Beweging geeft je de kennis, de oefeningen en de begeleiding om écht aan de slag te gaan: stap voor stap, op jouw tempo.
+
+Meer informatie: https://www.vitality-matters.nl/artrose-in-beweging
+
+Met beweegvriendelijke groet,
+Ilse van den Bosch
+Vitality Matters`;
+
+  try {
+    const res = await fetch('https://formspree.io/f/mkokwwna', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({
+        naam: name,
+        email: email,
+        score: `${resultData.total}/84`,
+        profiel: profileData[resultData.level].title,
+        aandachtspunten: resultData.priorities.join(', '),
+        toestemming_mails: consent ? 'Ja' : 'Nee',
+        volledig_rapport: resultData.reportText,
+        _replyto: email,
+        _subject: `Leefstijlcheck ingevuld door ${name} — score ${resultData.total}/84`,
+        bericht: emailBody
+      })
+    });
+
+    if (res.ok) {
+      document.querySelector('.optin-form').style.display = 'none';
+      document.getElementById('success-msg').style.display = 'block';
+    } else {
+      btn.disabled = false;
+      btn.textContent = 'Stuur mij mijn persoonlijk rapport →';
+      alert('Er ging iets mis. Probeer het opnieuw.');
+    }
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = 'Stuur mij mijn persoonlijk rapport →';
+    alert('Er ging iets mis. Controleer je internetverbinding.');
+  }
+}
+
+function restart() {
+  current = 0; answers = new Array(28).fill(null); resultData = {};
+  document.getElementById('result-section').style.display = 'none';
+  document.getElementById('quiz-section').style.display = 'block';
+  document.querySelector('.optin-form').style.display = 'flex';
+  document.getElementById('success-msg').style.display = 'none';
+  document.getElementById('btn-submit').disabled = false;
+  document.getElementById('btn-submit').textContent = 'Stuur mij mijn persoonlijk rapport →';
+  document.getElementById('optin-name').value = '';
+  document.getElementById('optin-email').value = '';
+  document.getElementById('optin-consent').checked = false;
+  window.scrollTo({ top: 0, behavior: 'smooth' }); render();
+}
+
+render();
+</script>
+</body>
+</html>
